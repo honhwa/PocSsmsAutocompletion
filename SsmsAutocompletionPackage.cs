@@ -725,9 +725,44 @@ namespace SsmsAutocompletion {
                 var aliasItems = GetAliasSuggestions(sql, line, col);
                 items.AddRange(aliasItems);
 
-                // 4. Keyword fallback — ensures popup always shows when native/parser fails
-                foreach (var kw in SqlKeywordSet)
-                    items.Add(new CompletionItem(kw, kw + " ", "Keyword"));
+                // Detect dot context: alias.| or table.|
+                int wordStart = caretPos;
+                while (wordStart > 0 && IsWordChar(snapshot[wordStart - 1])) wordStart--;
+                bool isDotContext = wordStart > 0 && wordStart <= snapshot.Length && snapshot[wordStart - 1] == '.';
+
+                if (isDotContext) {
+                    // 4. Columns for the qualifier before the dot
+                    int qualEnd   = wordStart - 1; // position of '.'
+                    int qualStart = qualEnd;
+                    while (qualStart > 0 && IsWordChar(snapshot[qualStart - 1])) qualStart--;
+                    string qualifier = snapshot.GetText(qualStart, qualEnd - qualStart);
+
+                    if (!string.IsNullOrEmpty(qualifier)) {
+                        var aliasMap = parseResult != null
+                            ? SqlParserService.ExtractAliasMap(parseResult)
+                            : new Dictionary<string, TableInfo>();
+                        aliasMap.TryGetValue(qualifier.ToLowerInvariant(), out TableInfo tableInfo);
+
+                        // Also try direct match by table name
+                        if (tableInfo == null)
+                            tableInfo = DatabaseMetadataCache.GetTables(_connectionKey)
+                                .FirstOrDefault(t => string.Equals(t.TableName, qualifier, StringComparison.OrdinalIgnoreCase));
+
+                        if (tableInfo != null) {
+                            var cols = DatabaseMetadataCache.GetColumns(_connectionKey, tableInfo.Schema, tableInfo.TableName);
+                            foreach (var colonne in cols)
+                                items.Add(new CompletionItem(colonne.ColumnName, colonne.ColumnName, colonne.DataType));
+                        }
+                    }
+                } else {
+                    // 4. Tables from DB cache
+                    foreach (var t in DatabaseMetadataCache.GetTables(_connectionKey))
+                        items.Add(new CompletionItem(t.ToString(), t.ToString() + " ", "Table"));
+
+                    // 5. Keyword fallback — ensures popup always shows when native/parser fails
+                    foreach (var kw in SqlKeywordSet)
+                        items.Add(new CompletionItem(kw, kw + " ", "Keyword"));
+                }
 
                 // Deduplicate by DisplayText
                 items = items
