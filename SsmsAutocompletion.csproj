@@ -72,6 +72,7 @@
     <Compile Include="Completion\TableCompletionProvider.cs" />
     <Compile Include="Completion\ColumnCompletionProvider.cs" />
     <Compile Include="Completion\FkJoinCompletionProvider.cs" />
+    <Compile Include="Completion\SimilarColumnJoinCompletionProvider.cs" />
     <Compile Include="Completion\AliasCompletionProvider.cs" />
     <Compile Include="Completion\NativeCompletionProvider.cs" />
     <Compile Include="Completion\CompletionRequestBuilder.cs" />
