@@ -1,0 +1,46 @@
+using Microsoft.SqlServer.Management.SqlParser.MetadataProvider;
+using Microsoft.SqlServer.Management.SqlParser.Parser;
+using Microsoft.VisualStudio.Text;
+
+namespace SsmsAutocompletion {
+
+    internal sealed class CompletionRequest {
+        public string            Sql               { get; }
+        public int               CaretPosition     { get; }
+        public int               Line              { get; }
+        public int               Column            { get; }
+        public ConnectionKey     ConnectionKey     { get; }
+        public ParseResult       ParseResult       { get; }
+        public IMetadataProvider MetadataProvider  { get; }
+        public bool              IsDotContext      { get; }
+        public string            Qualifier         { get; }
+        public bool              IsJoinOnContext   { get; }
+        public bool              IsWhereContext    { get; }
+        public bool              IsAfterTableInFromJoin { get; }
+        public string            TableNameBeforeCursor  { get; }
+        public ITextSnapshot     Snapshot          { get; }
+
+        public CompletionRequest(
+            string sql, int caretPosition, int line, int column,
+            ConnectionKey connectionKey, ParseResult parseResult,
+            IMetadataProvider metadataProvider, bool isDotContext, string qualifier,
+            bool isJoinOnContext, bool isWhereContext,
+            bool isAfterTableInFromJoin, string tableNameBeforeCursor,
+            ITextSnapshot snapshot) {
+            Sql                    = sql;
+            CaretPosition          = caretPosition;
+            Line                   = line;
+            Column                 = column;
+            ConnectionKey          = connectionKey;
+            ParseResult            = parseResult;
+            MetadataProvider       = metadataProvider;
+            IsDotContext           = isDotContext;
+            Qualifier              = qualifier;
+            IsJoinOnContext        = isJoinOnContext;
+            IsWhereContext         = isWhereContext;
+            IsAfterTableInFromJoin = isAfterTableInFromJoin;
+            TableNameBeforeCursor  = tableNameBeforeCursor;
+            Snapshot               = snapshot;
+        }
+    }
+}

@@ -50,6 +50,35 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SsmsAutocompletionPackage.cs" />
+    <Compile Include="Models\CompletionItem.cs" />
+    <Compile Include="Models\TableInfo.cs" />
+    <Compile Include="Models\ColumnInfo.cs" />
+    <Compile Include="Models\ForeignKeyInfo.cs" />
+    <Compile Include="Models\ConnectionKey.cs" />
+    <Compile Include="Connection\IConnectionInfoProvider.cs" />
+    <Compile Include="Connection\SsmsConnectionInfoProvider.cs" />
+    <Compile Include="Cache\IDatabaseMetadata.cs" />
+    <Compile Include="Cache\DatabaseMetadataCache.cs" />
+    <Compile Include="Parsing\ISqlParser.cs" />
+    <Compile Include="Parsing\SsmsSqlParser.cs" />
+    <Compile Include="Parsing\IAliasExtractor.cs" />
+    <Compile Include="Parsing\AliasExtractor.cs" />
+    <Compile Include="Parsing\AliasGenerator.cs" />
+    <Compile Include="Parsing\IContextDetector.cs" />
+    <Compile Include="Parsing\SqlContextDetector.cs" />
+    <Compile Include="Completion\CompletionRequest.cs" />
+    <Compile Include="Completion\ICompletionProvider.cs" />
+    <Compile Include="Completion\KeywordCompletionProvider.cs" />
+    <Compile Include="Completion\TableCompletionProvider.cs" />
+    <Compile Include="Completion\ColumnCompletionProvider.cs" />
+    <Compile Include="Completion\FkJoinCompletionProvider.cs" />
+    <Compile Include="Completion\AliasCompletionProvider.cs" />
+    <Compile Include="Completion\NativeCompletionProvider.cs" />
+    <Compile Include="Completion\CompletionRequestBuilder.cs" />
+    <Compile Include="Completion\CompletionEngine.cs" />
+    <Compile Include="UI\AutoCompletePopup.cs" />
+    <Compile Include="Editor\SqlCommandFilter.cs" />
+    <Compile Include="Editor\VsTextViewCreationSqlListener.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="source.extension.vsixmanifest">
