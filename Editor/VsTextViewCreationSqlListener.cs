@@ -29,6 +29,9 @@ namespace SsmsAutocompletion {
         private static readonly IAliasExtractor AliasExtractor =
             new AliasExtractor();
 
+        private static readonly ICteExtractor CteExtractor =
+            new CteExtractor();
+
         private static readonly ISqlParser SqlParser =
             new SsmsSqlParser();
 
@@ -74,6 +77,7 @@ namespace SsmsAutocompletion {
                 new SimilarColumnJoinCompletionProvider(DatabaseMetadata, AliasExtractor),
                 new AliasCompletionProvider(AliasExtractor, SqlParser),
                 new ColumnCompletionProvider(DatabaseMetadata, AliasExtractor),
+                new CteCompletionProvider(CteExtractor),
                 new TableCompletionProvider(DatabaseMetadata),
                 new KeywordCompletionProvider(),
             }.AsReadOnly();

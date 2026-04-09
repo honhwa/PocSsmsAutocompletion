@@ -5,7 +5,8 @@ namespace SsmsAutocompletion {
         Table,
         Column,
         Join,
-        Alias
+        Alias,
+        Cte
     }
 
     internal sealed class CompletionItem {

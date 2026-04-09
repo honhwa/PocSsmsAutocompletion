@@ -63,6 +63,8 @@
     <Compile Include="Parsing\SsmsSqlParser.cs" />
     <Compile Include="Parsing\IAliasExtractor.cs" />
     <Compile Include="Parsing\AliasExtractor.cs" />
+    <Compile Include="Parsing\ICteExtractor.cs" />
+    <Compile Include="Parsing\CteExtractor.cs" />
     <Compile Include="Parsing\AliasGenerator.cs" />
     <Compile Include="Parsing\IContextDetector.cs" />
     <Compile Include="Parsing\SqlContextDetector.cs" />
@@ -74,6 +76,7 @@
     <Compile Include="Completion\FkJoinCompletionProvider.cs" />
     <Compile Include="Completion\SimilarColumnJoinCompletionProvider.cs" />
     <Compile Include="Completion\AliasCompletionProvider.cs" />
+    <Compile Include="Completion\CteCompletionProvider.cs" />
     <Compile Include="Completion\NativeCompletionProvider.cs" />
     <Compile Include="Completion\CompletionRequestBuilder.cs" />
     <Compile Include="Completion\CompletionEngine.cs" />
