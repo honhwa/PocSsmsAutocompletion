@@ -146,7 +146,8 @@ namespace SsmsAutocompletion {
                 if (items.Count == 0) return;
                 var wordSpan = _contextDetector.GetWordSpan(snapshot, caretPosition);
                 _textView.VisualElement.Dispatcher.InvokeAsync(() => {
-                    if (!_popup.IsVisible) _popup.Show(new System.Collections.Generic.List<CompletionItem>(items), wordSpan);
+                    if (!_textView.IsClosed && !_popup.IsVisible)
+                        _popup.Show(new System.Collections.Generic.List<CompletionItem>(items), wordSpan);
                 });
             }
             catch { }

@@ -29,6 +29,7 @@ namespace SsmsAutocompletion {
             _popup    = BuildPopup(textView);
             _popup.Closed += (sender, args) => _allItems.Clear();
             _textView.VisualElement.PreviewMouseDown += (sender, args) => Dismiss();
+            _textView.Closed += (sender, args) => Dismiss();
         }
 
         public void Show(IList<CompletionItem> items, ITrackingSpan wordSpan) {
