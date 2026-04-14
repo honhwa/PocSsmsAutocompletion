@@ -72,6 +72,7 @@
     <Compile Include="Parsing\SqlContextDetector.cs" />
     <Compile Include="Completion\CompletionRequest.cs" />
     <Compile Include="Completion\ICompletionProvider.cs" />
+    <Compile Include="Completion\FunctionCompletionProvider.cs" />
     <Compile Include="Completion\KeywordCompletionProvider.cs" />
     <Compile Include="Completion\TableCompletionProvider.cs" />
     <Compile Include="Completion\ColumnCompletionProvider.cs" />

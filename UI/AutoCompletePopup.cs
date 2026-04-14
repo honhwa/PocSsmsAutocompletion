@@ -151,7 +151,8 @@ namespace SsmsAutocompletion {
                         case CompletionItemKind.Keyword: return KnownMonikers.IntellisenseKeyword;
                         case CompletionItemKind.Join:    return KnownMonikers.Join;
                         case CompletionItemKind.Alias:   return KnownMonikers.KeywordSnippet;
-                        case CompletionItemKind.Cte:     return KnownMonikers.View;
+                        case CompletionItemKind.Cte:      return KnownMonikers.View;
+                        case CompletionItemKind.Function: return KnownMonikers.ScalarFunction;
                     }
                 }
                 return new ImageMoniker();
