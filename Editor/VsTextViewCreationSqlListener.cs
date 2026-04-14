@@ -76,6 +76,7 @@ namespace SsmsAutocompletion {
         private static IReadOnlyList<ICompletionProvider> BuildProviders() =>
             new List<ICompletionProvider> {
                 new NativeCompletionProvider(),
+                new FkJoinTableCompletionProvider(DatabaseMetadata, AliasExtractor),
                 new FkJoinCompletionProvider(DatabaseMetadata, AliasExtractor, ContextDetector),
                 new SimilarColumnJoinCompletionProvider(DatabaseMetadata, AliasExtractor),
                 new AliasCompletionProvider(AliasExtractor, SqlParser),

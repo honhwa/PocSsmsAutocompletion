@@ -75,6 +75,7 @@
     <Compile Include="Completion\KeywordCompletionProvider.cs" />
     <Compile Include="Completion\TableCompletionProvider.cs" />
     <Compile Include="Completion\ColumnCompletionProvider.cs" />
+    <Compile Include="Completion\FkJoinTableCompletionProvider.cs" />
     <Compile Include="Completion\FkJoinCompletionProvider.cs" />
     <Compile Include="Completion\SimilarColumnJoinCompletionProvider.cs" />
     <Compile Include="Completion\AliasCompletionProvider.cs" />
@@ -95,6 +96,7 @@
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="System.Data" />
     <Reference Include="WindowsBase" />
     <Reference Include="SqlPackageBase">
       <HintPath>C:\Program Files\Microsoft SQL Server Management Studio 22\Release\Common7\IDE\SqlPackageBase.dll</HintPath>

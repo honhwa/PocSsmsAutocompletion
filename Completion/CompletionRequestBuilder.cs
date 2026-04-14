@@ -23,14 +23,15 @@ namespace SsmsAutocompletion {
             var metadataProvider = _databaseMetadata.GetMetadataProvider(connectionKey);
             bool isDotContext  = _contextDetector.IsDotContext(snapshot, caretPosition);
             string qualifier   = isDotContext ? _contextDetector.GetQualifier(snapshot, caretPosition) : null;
-            bool isJoinOnContext  = _contextDetector.IsAfterKeyword(parseResult, line, column, "ON");
-            bool isWhereContext   = _contextDetector.IsInsideWhereClause(parseResult, line, column);
+            bool isJoinOnContext    = _contextDetector.IsAfterKeyword(parseResult, line, column, "ON");
+            bool isAfterJoinKeyword = _contextDetector.IsAfterJoinKeyword(sql, caretPosition);
+            bool isWhereContext     = _contextDetector.IsInsideWhereClause(parseResult, line, column);
             var (isAfterTable, tableNameBefore) = _contextDetector.DetectAliasContext(parseResult, sql, line, column, caretPosition);
             return new CompletionRequest(
                 sql, caretPosition, line, column,
                 connectionKey, parseResult, metadataProvider,
                 isDotContext, qualifier,
-                isJoinOnContext, isWhereContext,
+                isJoinOnContext, isAfterJoinKeyword, isWhereContext,
                 isAfterTable, tableNameBefore,
                 snapshot);
         }
