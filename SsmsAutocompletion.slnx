@@ -8,4 +8,5 @@
     <Platform Solution="*|arm64" Project="arm64" />
     <Platform Solution="*|x86" Project="x86" />
   </Project>
+  <Project Path="SsmsAutocompletion.Tests\SsmsAutocompletion.Tests.csproj" Id="b5d2a7f4-3e1c-4b9d-8f6e-c2a4b7d9e3f1" />
 </Solution>
