@@ -43,14 +43,46 @@ Keystroke → SqlCommandFilter.Exec()
 
 ## Development Rules
 
-**Always use the SSMS SQL parser for context detection — never regex.**
+**Always use the SSMS SQL parser — never regex, never hand-written extraction.**
 
-The SSMS parser (`Microsoft.SqlServer.Management.SqlParser`) provides a full token manager via `ParseResult.Script.TokenManager`. Use it for all SQL context detection:
+The SSMS parser (`Microsoft.SqlServer.Management.SqlParser`) exposes two complementary APIs. Choose the right one for the task:
+
+### 1. SqlCodeDom AST — for structural SQL analysis
+
+`ParseResult.Script` returns a typed `SqlScript` AST from the `Microsoft.SqlServer.Management.SqlParser.SqlCodeDom` namespace. Use it whenever you need to extract structural information from a query: CTEs, SELECT lists, FROM clauses, etc.
+
+```csharp
+// Example: enumerate all CTEs in a query
+foreach (SqlBatch batch in parseResult.Script.Batches)
+    foreach (SqlStatement stmt in batch.Statements) {
+        var withClause = (stmt as SqlSelectStatement)?.QueryWithClause;
+        if (withClause == null) continue;
+        foreach (SqlCommonTableExpression cte in withClause.CommonTableExpressions) {
+            string name          = cte.Name.Value;               // CTE name
+            var    explicitCols  = cte.ColumnList;               // SqlIdentifierCollection (may be empty)
+            var    queryExpr     = cte.QueryExpression;          // SqlQueryExpression (body)
+        }
+    }
+```
+
+Key types: `SqlScript`, `SqlBatch`, `SqlSelectStatement`, `SqlQueryWithClause`, `SqlCommonTableExpression`, `SqlQuerySpecification`, `SqlSelectClause`, `SqlSelectScalarExpression`, `SqlColumnRefExpression`, `SqlIdentifier`.
+
+Do **not** write custom parsing loops, regex, or token-walking to extract information the AST already provides.
+
+### 2. TokenManager — for cursor-position context detection
+
+`ParseResult.Script.TokenManager` provides token-level access needed to answer "what is the user typing right now":
 
 - `tokenManager.FindToken(line, column)` — find the token at the cursor position
 - `tokenManager.GetPreviousSignificantTokenIndex(index)` — walk backwards through significant tokens
 - `tokenManager.GetText(index)` — read token text
 
-This correctly handles partial identifiers being typed, multi-line queries, comments, and string literals. Regex over raw SQL text is fragile by comparison and must not be used as a substitute.
+Use this for positional context (e.g. "is the cursor after a JOIN keyword?"), not for extracting query structure. The existing `IContextDetector.IsAfterKeyword()` is the reference implementation.
 
-The existing `IContextDetector.IsAfterKeyword(parseResult, line, column, keyword)` is the reference implementation of this pattern.
+### Decision rule
+
+| Need | Use |
+|------|-----|
+| Extract query structure (CTEs, columns, aliases…) | SqlCodeDom AST |
+| Detect what the user is typing at the cursor | TokenManager |
+| Anything else | Neither — check the AST first |
